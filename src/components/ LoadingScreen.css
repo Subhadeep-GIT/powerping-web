@@ -1,0 +1,63 @@
+/* src/components/LoadingScreen.css */
+
+.loading-screen {
+  background-color: #121212;
+  height: 100vh;
+  width: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  border: 4px solid #444;
+  border-top: 4px solid #e91e63; /* pink */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-center-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #e91e63;
+  border: 2px solid black;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.underline {
+  margin-top: 10px;
+  width: 24px;
+  height: 4px;
+  background-color: #e91e63;
+  border-radius: 4px;
+}
+
+.loading-text {
+  margin-top: 24px;
+  color: #00bfa5; /* teal green */
+  font-size: 18px;
+  text-align: center;
+  line-height: 1.4;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
