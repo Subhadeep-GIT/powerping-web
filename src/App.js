@@ -31,7 +31,7 @@ function App() {
       console.log("🔄 Fetching power status from backend...");
 
       const res = await fetch(
-        "https://behalf-slow-narrative-rw.trycloudflare.com/power-status"
+        " https://strange-revealed-techniques-frequency.trycloudflare.com/power-status"
       );
 
       if (!res.ok) {
