@@ -1,74 +1,72 @@
-.card {
-  max-width: 360px;
-  margin: 2rem auto;
-  border-radius: 32px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  text-align: center;
+.status-card {
+  background: #1e1e1e;
+  border-radius: 20px;
   padding: 24px;
+  width: 90%;
+  max-width: 360px;
+  margin: 40px auto;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(49, 198, 169, 0.2);
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.card-header {
-  background: #2b8e7e;
-  color: #fff;
-  font-weight: 600;
-  font-size: 20px;
-  padding: 16px;
-  border-top-left-radius: 32px;
-  border-top-right-radius: 32px;
-  margin: -24px -24px 16px;
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #31c6a9;
+  margin-bottom: 20px;
 }
 
-.icon-wrapper {
-  background: #2b8e7e;
-  border-radius: 50%;
-  padding: 20px;
-  margin: 0 auto 16px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+.icon-section {
+  margin-bottom: 20px;
 }
 
 .label {
   font-size: 16px;
-  color: #333;
-  margin-bottom: 4px;
+  color: #bbb;
 }
 
-.status {
+.status-text {
   font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-weight: 600;
+  margin: 8px 0 16px;
 }
 
-.ac {
-  color: #2b8e7e;
+.status-text.ac {
+  color: #31c6a9;
 }
 
-.battery {
-  color: #c0392b;
+.status-text.battery {
+  color: #ff2da5;
 }
 
-.sub {
+.meta {
   font-size: 14px;
-  color: #444;
+  color: #aaa;
   margin-bottom: 4px;
+}
+
+.meta .ac {
+  color: #31c6a9;
+}
+
+.meta .battery {
+  color: #ff2da5;
 }
 
 .refresh-btn {
-  margin-top: 16px;
-  padding: 10px 24px;
-  border: 2px solid #2b8e7e;
-  border-radius: 20px;
-  background: transparent;
-  color: #2b8e7e;
-  font-weight: 600;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #2b8e7e;
+  color: white;
+  border: none;
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .refresh-btn:hover {
-  background: #2b8e7e;
-  color: #fff;
+  background-color: #31c6a9;
 }

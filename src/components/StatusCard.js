@@ -6,32 +6,32 @@ export default function StatusCard({
   powerStatus = "Unknown",
   serverStatus = "Disconnected",
   lastUpdated = "N/A",
-  onRefresh = () => {}
+  onRefresh = () => {},
 }) {
   const isAC = powerStatus === "AC";
   const isConnected = serverStatus === "Connected";
 
   return (
-    <div className="card" role="region" aria-label="Power Status Card">
-      <div className="card-header">Power Ping</div>
+    <div className="status-card" role="region" aria-label="Power Status">
+      <div className="card-title">⚡ Power Ping</div>
 
-      <div className="icon-wrapper">
-        <FaPlug size={48} color="#fff" />
+      <div className="icon-section">
+        <FaPlug size={48} color="#ff2da5" />
       </div>
 
       <div className="label">Currently on:</div>
-      <div className={`status ${isAC ? "ac" : "battery"}`}>
-        {isAC ? "AC Power" : "Battery"}
+      <div className={`status-text ${isAC ? "ac" : "battery"}`}>
+        {isAC ? "AC Power" : "Backup Power"}
       </div>
 
-      <div className="sub">Last Updated: {lastUpdated}</div>
-      <div className="sub">
-        Server Status:{" "}
+      <div className="meta">🕒 Last Updated: {lastUpdated}</div>
+      <div className="meta">
+        🛰 Server:{" "}
         <span className={isConnected ? "ac" : "battery"}>{serverStatus}</span>
       </div>
 
-      <button className="refresh-btn" onClick={onRefresh} aria-label="Refresh Power Status">
-        Refresh Status
+      <button className="refresh-btn" onClick={onRefresh}>
+        🔄 Refresh
       </button>
     </div>
   );
