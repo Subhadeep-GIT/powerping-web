@@ -29,7 +29,7 @@ function App() {
       console.log("🔄 Fetching power status from backend...");
 
       const res = await fetch(
-        "https://jun-correspondence-holly-fact.trycloudflare.com/power-status"
+        "https://viewers-durable-instead-counseling.trycloudflare.com/power-status"
       );
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
