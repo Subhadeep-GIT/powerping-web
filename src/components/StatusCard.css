@@ -1,72 +1,93 @@
+.status-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .status-card {
-  background: #1e1e1e;
-  border-radius: 20px;
+  background-color: #1a1a1a;
   padding: 24px;
-  width: 90%;
-  max-width: 360px;
-  margin: 40px auto;
+  border-radius: 24px;
+  max-width: 320px;
+  width: 100%;
   text-align: center;
-  box-shadow: 0 0 20px rgba(49, 198, 169, 0.2);
-  color: #ffffff;
-  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  transition: border 0.3s ease, background-color 0.5s ease;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+}
+
+.border-ac {
+  border: 2px solid #00ff00;
+}
+
+.border-battery {
+  border: 2px solid #ff2da5;
 }
 
 .card-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: #31c6a9;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .icon-section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .label {
   font-size: 16px;
-  color: #bbb;
-}
-
-.status-text {
-  font-size: 22px;
-  font-weight: 600;
-  margin: 8px 0 16px;
+  color: #ccc;
 }
 
 .status-text.ac {
-  color: #31c6a9;
+  color: #00ff00;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .status-text.battery {
   color: #ff2da5;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .meta {
   font-size: 14px;
   color: #aaa;
-  margin-bottom: 4px;
-}
-
-.meta .ac {
-  color: #31c6a9;
-}
-
-.meta .battery {
-  color: #ff2da5;
+  margin-top: 8px;
 }
 
 .refresh-btn {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #2b8e7e;
+  background-color: #007f76;
   color: white;
   border: none;
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-.refresh-btn:hover {
-  background-color: #31c6a9;
+/* Refresh animation */
+.refresh-btn.clicked {
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Power change highlight */
+.status-card.highlight {
+  background-color: #222822;
 }

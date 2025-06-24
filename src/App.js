@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import StatusCard from "./components/StatusCard";
+import TopMenu from "./components/TopMenu";
 
 function getTime() {
   const now = new Date();
@@ -11,10 +12,10 @@ function App() {
   const [serverStatus, setServerStatus] = useState("Connecting...");
   const [lastUpdated, setLastUpdated] = useState("Loading...");
   const [isLoading, setIsLoading] = useState(true);
+  const [highlightClass, setHighlightClass] = useState("");
   const previousPowerStatus = useRef("");
   const firstRun = useRef(true);
 
-  // Ask for notification permission on first mount
   useEffect(() => {
     if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission().catch((err) =>
@@ -23,7 +24,6 @@ function App() {
     }
   }, []);
 
-  // Fetch power status
   const fetchPowerStatus = useCallback(async () => {
     try {
       console.log("🔄 Fetching power status from backend...");
@@ -38,16 +38,22 @@ function App() {
       console.log("✅ Received response:", json);
 
       const newStatus = json.powerStatus;
+
       if (newStatus === "AC" || newStatus === "Battery") {
-        previousPowerStatus.current = powerStatus;
+        if (!firstRun.current && previousPowerStatus.current !== newStatus) {
+          // Animate background if power source changed
+          setHighlightClass("highlight");
+          setTimeout(() => setHighlightClass(""), 700);
+        }
+
+        previousPowerStatus.current = newStatus;
 
         if (newStatus !== powerStatus) {
           setPowerStatus(newStatus);
         }
 
         setServerStatus("Connected");
-        setIsLoading(false); // Hide loading screen
-        console.log("✅ Server marked as Connected");
+        setIsLoading(false);
       } else {
         throw new Error("Invalid powerStatus value");
       }
@@ -59,14 +65,12 @@ function App() {
     setLastUpdated(getTime());
   }, [powerStatus]);
 
-  // Poll every 10 seconds
   useEffect(() => {
     fetchPowerStatus();
     const interval = setInterval(fetchPowerStatus, 10000);
     return () => clearInterval(interval);
   }, [fetchPowerStatus]);
 
-  // Notification on power status change (except first load)
   useEffect(() => {
     if (
       !firstRun.current &&
@@ -92,7 +96,6 @@ function App() {
     }
   }, [powerStatus]);
 
-  // Initial loading screen
   if (isLoading) {
     return (
       <div
@@ -133,49 +136,54 @@ function App() {
   }
 
   return (
-    <div>
-      <StatusCard
-        powerStatus={powerStatus}
-        serverStatus={serverStatus}
-        lastUpdated={lastUpdated}
-        onRefresh={fetchPowerStatus}
-      />
+  <div>
+    {/* 🧭 Top Navigation Menu */}
+    <TopMenu />
 
-      {/* 🔔 Test Notification Button */}
-      <button
-        onClick={() => {
-          if (
-            "Notification" in window &&
-            Notification.permission === "granted" &&
-            navigator.serviceWorker
-          ) {
-            navigator.serviceWorker.getRegistration().then((reg) => {
-              if (reg) {
-                reg.showNotification("Test Notification", {
-                  body: "This is a test notification.",
-                  icon: "/logo192.png",
-                });
-              }
-            });
-          } else {
-            console.log("🔕 Notification not allowed or supported.");
-          }
-        }}
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: "#2b8e7e",
-          color: "#fff",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-        }}
-      >
-        Test Notification
-      </button>
-    </div>
-  );
+    {/* ⚡ Power Status Card */}
+    <StatusCard
+      powerStatus={powerStatus}
+      serverStatus={serverStatus}
+      lastUpdated={lastUpdated}
+      onRefresh={fetchPowerStatus}
+      highlightClass={highlightClass}
+    />
+
+    {/* 🔔 Test Notification Button */}
+    <button
+      onClick={() => {
+        if (
+          "Notification" in window &&
+          Notification.permission === "granted" &&
+          navigator.serviceWorker
+        ) {
+          navigator.serviceWorker.getRegistration().then((reg) => {
+            if (reg) {
+              reg.showNotification("Test Notification", {
+                body: "This is a test notification.",
+                icon: "/logo192.png",
+              });
+            }
+          });
+        } else {
+          console.log("🔕 Notification not allowed or supported.");
+        }
+      }}
+      style={{
+        marginTop: "20px",
+        padding: "10px 20px",
+        fontSize: "16px",
+        backgroundColor: "#2b8e7e",
+        color: "#fff",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+      }}
+    >
+      Test Notification
+    </button>
+  </div>
+);
 }
 
 export default App;
