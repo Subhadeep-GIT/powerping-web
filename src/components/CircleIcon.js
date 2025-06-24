@@ -1,27 +1,27 @@
-import React from "react";
-
 export default function CircleIcon({ label, img }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <div
+    <div
+      className="circle-icon"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        minWidth: 64, // 👈 important for scrolling
+        flexShrink: 0,
+      }}
+    >
+      <img
+        src={img}
+        alt={label}
         style={{
-          width: 48,
-          height: 48,
+          width: 64,
+          height: 64,
           borderRadius: "50%",
-          backgroundColor: "#1f1f1f",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          border: "2px solid #ff2da5",
+          objectFit: "cover",
         }}
-      >
-        <img
-          src={process.env.PUBLIC_URL + "/" + img}
-          alt={label}
-          style={{ width: 24, height: 24 }}
-        />
-      </div>
-      <span style={{ marginTop: 6, fontSize: 12, color: "#eee" }}>{label}</span>
+      />
+      <span style={{ marginTop: 8, color: "#eaeaea", fontSize: 12 }}>{label}</span>
     </div>
   );
 }

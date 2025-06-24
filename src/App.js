@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import StatusCard from "./components/StatusCard";
 import TopMenu from "./components/TopMenu";
+import "./App.css";
 
 function getTime() {
   const now = new Date();
@@ -136,18 +137,20 @@ function App() {
   }
 
   return (
-  <div>
+  <div className="app-container">
     {/* 🧭 Top Navigation Menu */}
     <TopMenu />
 
     {/* ⚡ Power Status Card */}
-    <StatusCard
-      powerStatus={powerStatus}
-      serverStatus={serverStatus}
-      lastUpdated={lastUpdated}
-      onRefresh={fetchPowerStatus}
-      highlightClass={highlightClass}
-    />
+    <div className="card-container">
+      <StatusCard
+        powerStatus={powerStatus}
+        serverStatus={serverStatus}
+        lastUpdated={lastUpdated}
+        onRefresh={fetchPowerStatus}
+        highlightClass={highlightClass}
+      />
+    </div>
 
     {/* 🔔 Test Notification Button */}
     <button
@@ -168,16 +171,6 @@ function App() {
         } else {
           console.log("🔕 Notification not allowed or supported.");
         }
-      }}
-      style={{
-        marginTop: "20px",
-        padding: "10px 20px",
-        fontSize: "16px",
-        backgroundColor: "#2b8e7e",
-        color: "#fff",
-        border: "none",
-        borderRadius: "8px",
-        cursor: "pointer",
       }}
     >
       Test Notification
