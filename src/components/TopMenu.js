@@ -1,12 +1,16 @@
 import React from "react";
-import CircleIcon from "./CircleIcon"; // ✅ Add this
+import "./TopMenu.css"; // ✅ Import the styles
+import CircleIcon from "./CircleIcon"; // ✅ Already present
 
 export default function TopMenu() {
   return (
-    <div style={{ display: 'flex', overflowX: 'auto', gap: 16, padding: 12 }}>
+    <div className="top-menu-container">
       <CircleIcon label="Power" img="power.png" />
       <CircleIcon label="Memory" img="memory.png" />
-      {/* Add more items as needed */}
+      <CircleIcon label="CPU" img="cpu.png" />
+      <CircleIcon label="Battery" img="battery.png" />
+      <CircleIcon label="Logs" img="logs.png" />
+      <CircleIcon label="Refresh" img="refresh.png" />
     </div>
   );
 }

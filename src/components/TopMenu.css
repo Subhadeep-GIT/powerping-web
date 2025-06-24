@@ -1,0 +1,12 @@
+.top-menu-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 12px 16px;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  scrollbar-width: none; /* Firefox */
+}
+
+.top-menu-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
