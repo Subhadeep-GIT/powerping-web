@@ -63,7 +63,7 @@ function App() {
 
   const fetchBatteryData = useCallback(async () => {
     try {
-      const res = await fetch("http://100.78.190.126:3000/battery-percentage");
+      const res = await fetch("https://shown-doll-emergency-valley.trycloudflare.com/battery-percentage");
       const json = await res.json();
       setBatteryLevel(json.battery);
       setLastUpdated(getTime());
@@ -74,7 +74,7 @@ function App() {
 
   const fetchMemoryData = useCallback(async () => {
     try {
-      const res = await fetch("http://100.78.190.126:3000/memory-usage");
+      const res = await fetch("https://shown-doll-emergency-valley.trycloudflare.com/memory-usage");
       const json = await res.json();
       setMemoryData(json);
       setLastUpdated(getTime());
