@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import StatusCard from "./components/StatusCard";
 import MemoryCard from "./components/MemoryCard";
 import BatteryLevelCard from "./components/BatteryLevelCard";
-import TopMenu from "./components/TopMenu";
+import HamburgerMenu from "./components/HamburgerMenu";
 import "./App.css";
 
 function getTime() {
@@ -17,10 +17,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [highlightClass, setHighlightClass] = useState("");
   const [activeView, setActiveView] = useState("Power");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [batteryLevel, setBatteryLevel] = useState(null);
   const [memoryData, setMemoryData] = useState(null);
 
+  const menuRef = useRef(null);
   const previousPowerStatus = useRef("");
   const firstRun = useRef(true);
 
@@ -31,6 +33,22 @@ function App() {
       );
     }
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
 
   const fetchPowerStatus = useCallback(async () => {
     try {
@@ -114,9 +132,9 @@ function App() {
     }
   }, [powerStatus]);
 
-  // Handle card switching + optional lazy fetch
   const handleViewChange = (view) => {
     setActiveView(view);
+    setIsMenuOpen(false);
     if (view === "Battery") fetchBatteryData();
     if (view === "Memory") fetchMemoryData();
   };
@@ -162,8 +180,20 @@ function App() {
 
   return (
     <div className="app-container">
-      <TopMenu onSelect={handleViewChange} />
+      {/* 🔝 App Header with Menu */}
+      <div className="app-header">
+        <div className="app-title">Power Ping</div>
+        <div className="menu-icon-container" ref={menuRef}>
+          <HamburgerMenu
+            isOpen={isMenuOpen}
+            onToggle={() => setIsMenuOpen((prev) => !prev)}
+            onSelect={handleViewChange}
+            activeView={activeView}
+          />
+        </div>
+      </div>
 
+      {/* 📦 Card View Section */}
       <div className="card-container">
         {activeView === "Power" && (
           <StatusCard
@@ -192,6 +222,7 @@ function App() {
         )}
       </div>
 
+      {/* 🔔 Test Push Button */}
       <button
         onClick={() => {
           if (

@@ -1,4 +1,25 @@
-/* Global Styles */
+/* ========== Global Styles ========== */
+
+.app-header {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f1f1f;
+  position: relative;
+  z-index: 999;
+}
+
+.menu-icon-container {
+  position: relative;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #31c6a9;
+}
 body {
   margin: 0;
   background-color: #121212;
@@ -6,7 +27,7 @@ body {
   font-family: "Segoe UI", Roboto, sans-serif;
 }
 
-/* Container for the whole app */
+/* ========== App Layout ========== */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -16,52 +37,22 @@ body {
   background-color: #121212;
 }
 
-/* Center the status card */
 .card-container {
   display: flex;
   justify-content: center;
   width: 100%;
   padding: 24px 0;
 }
-
-/* Top Menu Scroll */
-.top-menu {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  padding: 12px;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  max-width: 100%;
-  scrollbar-width: none; /* Firefox */
+.fixed-menu-icon {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1001; /* Above menu */
 }
 
-.top-menu::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
+/* ========== Top Menu Scrollable Bar ========== */
 
-/* Circle Icon Items */
-.circle-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 72px;
-  min-width: 72px;
-  color: #d0cde1;
-  font-size: 14px;
-}
-
-.circle-icon img {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 6px;
-  border: 2px solid #333;
-}
-
-/* Button (e.g., Test Notification) */
+/* ========== Button Styles ========== */
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -78,13 +69,17 @@ button:hover {
   background-color: #227367;
 }
 
-/* Loading Spinner Animation */
+/* ========== Loading Spinner Animation ========== */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-/* Optional: If using App-logo */
+/* Optional: React logo animation */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -97,6 +92,10 @@ button:hover {
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
