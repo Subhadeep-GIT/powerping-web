@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import StatusCard from "./components/StatusCard";
+import MemoryCard from "./components/MemoryCard";
+import BatteryLevelCard from "./components/BatteryLevelCard";
 import TopMenu from "./components/TopMenu";
 import "./App.css";
 
@@ -14,6 +16,11 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState("Loading...");
   const [isLoading, setIsLoading] = useState(true);
   const [highlightClass, setHighlightClass] = useState("");
+  const [activeView, setActiveView] = useState("Power");
+
+  const [batteryLevel, setBatteryLevel] = useState(null);
+  const [memoryData, setMemoryData] = useState(null);
+
   const previousPowerStatus = useRef("");
   const firstRun = useRef(true);
 
@@ -27,31 +34,19 @@ function App() {
 
   const fetchPowerStatus = useCallback(async () => {
     try {
-      console.log("🔄 Fetching power status from backend...");
-
-      const res = await fetch(
-        "https://shown-doll-emergency-valley.trycloudflare.com/power-status"
-      );
-
+      const res = await fetch("https://shown-doll-emergency-valley.trycloudflare.com/power-status");
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-
       const json = await res.json();
-      console.log("✅ Received response:", json);
 
       const newStatus = json.powerStatus;
-
       if (newStatus === "AC" || newStatus === "Battery") {
         if (!firstRun.current && previousPowerStatus.current !== newStatus) {
-          // Animate background if power source changed
           setHighlightClass("highlight");
           setTimeout(() => setHighlightClass(""), 700);
         }
 
         previousPowerStatus.current = newStatus;
-
-        if (newStatus !== powerStatus) {
-          setPowerStatus(newStatus);
-        }
+        if (newStatus !== powerStatus) setPowerStatus(newStatus);
 
         setServerStatus("Connected");
         setIsLoading(false);
@@ -65,6 +60,28 @@ function App() {
 
     setLastUpdated(getTime());
   }, [powerStatus]);
+
+  const fetchBatteryData = useCallback(async () => {
+    try {
+      const res = await fetch("http://100.78.190.126:3000/battery-percentage");
+      const json = await res.json();
+      setBatteryLevel(json.battery);
+      setLastUpdated(getTime());
+    } catch (err) {
+      console.error("Battery fetch error:", err);
+    }
+  }, []);
+
+  const fetchMemoryData = useCallback(async () => {
+    try {
+      const res = await fetch("http://100.78.190.126:3000/memory-usage");
+      const json = await res.json();
+      setMemoryData(json);
+      setLastUpdated(getTime());
+    } catch (err) {
+      console.error("Memory fetch error:", err);
+    }
+  }, []);
 
   useEffect(() => {
     fetchPowerStatus();
@@ -97,7 +114,14 @@ function App() {
     }
   }, [powerStatus]);
 
-  if (isLoading) {
+  // Handle card switching + optional lazy fetch
+  const handleViewChange = (view) => {
+    setActiveView(view);
+    if (view === "Battery") fetchBatteryData();
+    if (view === "Memory") fetchMemoryData();
+  };
+
+  if (isLoading && activeView === "Power") {
     return (
       <div
         style={{
@@ -137,46 +161,61 @@ function App() {
   }
 
   return (
-  <div className="app-container">
-    {/* 🧭 Top Navigation Menu */}
-    <TopMenu />
+    <div className="app-container">
+      <TopMenu onSelect={handleViewChange} />
 
-    {/* ⚡ Power Status Card */}
-    <div className="card-container">
-      <StatusCard
-        powerStatus={powerStatus}
-        serverStatus={serverStatus}
-        lastUpdated={lastUpdated}
-        onRefresh={fetchPowerStatus}
-        highlightClass={highlightClass}
-      />
+      <div className="card-container">
+        {activeView === "Power" && (
+          <StatusCard
+            powerStatus={powerStatus}
+            serverStatus={serverStatus}
+            lastUpdated={lastUpdated}
+            onRefresh={fetchPowerStatus}
+            highlightClass={highlightClass}
+          />
+        )}
+
+        {activeView === "Memory" && memoryData && (
+          <MemoryCard
+            memoryData={memoryData}
+            lastUpdated={lastUpdated}
+            onRefresh={fetchMemoryData}
+          />
+        )}
+
+        {activeView === "Battery" && batteryLevel !== null && (
+          <BatteryLevelCard
+            battery={batteryLevel}
+            lastUpdated={lastUpdated}
+            onRefresh={fetchBatteryData}
+          />
+        )}
+      </div>
+
+      <button
+        onClick={() => {
+          if (
+            "Notification" in window &&
+            Notification.permission === "granted" &&
+            navigator.serviceWorker
+          ) {
+            navigator.serviceWorker.getRegistration().then((reg) => {
+              if (reg) {
+                reg.showNotification("Test Notification", {
+                  body: "This is a test notification.",
+                  icon: "/logo192.png",
+                });
+              }
+            });
+          } else {
+            console.log("🔕 Notification not allowed or supported.");
+          }
+        }}
+      >
+        Test Notification
+      </button>
     </div>
-
-    {/* 🔔 Test Notification Button */}
-    <button
-      onClick={() => {
-        if (
-          "Notification" in window &&
-          Notification.permission === "granted" &&
-          navigator.serviceWorker
-        ) {
-          navigator.serviceWorker.getRegistration().then((reg) => {
-            if (reg) {
-              reg.showNotification("Test Notification", {
-                body: "This is a test notification.",
-                icon: "/logo192.png",
-              });
-            }
-          });
-        } else {
-          console.log("🔕 Notification not allowed or supported.");
-        }
-      }}
-    >
-      Test Notification
-    </button>
-  </div>
-);
+  );
 }
 
 export default App;

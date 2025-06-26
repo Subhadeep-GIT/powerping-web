@@ -1,16 +1,23 @@
+// TopMenu.js
 import React from "react";
-import "./TopMenu.css"; // ✅ Import the styles
-import CircleIcon from "./CircleIcon"; // ✅ Already present
+import "./TopMenu.css";
+import CircleIcon from "./CircleIcon";
 
-export default function TopMenu() {
+export default function TopMenu({ onSelect }) {
+  const buttons = [
+    { label: "Power", img: "power.png" },
+    { label: "Memory", img: "memory.png" },
+    { label: "CPU", img: "cpu.png" },
+    { label: "Battery", img: "battery.png" },
+    { label: "Logs", img: "logs.png" },
+    { label: "Refresh", img: "refresh.png" }
+  ];
+
   return (
     <div className="top-menu-container">
-      <CircleIcon label="Power" img="power.png" />
-      <CircleIcon label="Memory" img="memory.png" />
-      <CircleIcon label="CPU" img="cpu.png" />
-      <CircleIcon label="Battery" img="battery.png" />
-      <CircleIcon label="Logs" img="logs.png" />
-      <CircleIcon label="Refresh" img="refresh.png" />
+      {buttons.map(({ label, img }) => (
+        <CircleIcon key={label} label={label} img={img} onClick={() => onSelect(label)} />
+      ))}
     </div>
   );
 }
