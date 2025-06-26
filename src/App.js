@@ -30,7 +30,7 @@ function App() {
       console.log("🔄 Fetching power status from backend...");
 
       const res = await fetch(
-        "https://vsnet-characters-prove-inches.trycloudflare.com/power-status"
+        "https://shown-doll-emergency-valley.trycloudflare.com/power-status"
       );
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
