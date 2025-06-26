@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import StatusCard from "./components/StatusCard";
 import MemoryCard from "./components/MemoryCard";
 import BatteryLevelCard from "./components/BatteryLevelCard";
+import NetworkSpeedCard from "./components/NetworkSpeedCard";
 import HamburgerMenu from "./components/HamburgerMenu";
 import "./App.css";
 
@@ -21,6 +22,7 @@ function App() {
 
   const [batteryLevel, setBatteryLevel] = useState(null);
   const [memoryData, setMemoryData] = useState(null);
+  const [networkSpeed, setNetworkSpeed] = useState(null);
 
   const menuRef = useRef(null);
   const previousPowerStatus = useRef("");
@@ -101,6 +103,17 @@ function App() {
     }
   }, []);
 
+  const fetchNetworkSpeed = useCallback(async () => {
+    try {
+      const res = await fetch("https://dir-actors-bind-problem.trycloudflare.com/network-speed");
+      const json = await res.json();
+      setNetworkSpeed(json);
+      setLastUpdated(getTime());
+    } catch (err) {
+      console.error("Network speed fetch error:", err);
+    }
+  }, []);
+
   useEffect(() => {
     fetchPowerStatus();
     const interval = setInterval(fetchPowerStatus, 10000);
@@ -137,6 +150,7 @@ function App() {
     setIsMenuOpen(false);
     if (view === "Battery") fetchBatteryData();
     if (view === "Memory") fetchMemoryData();
+    if (view === "Network") fetchNetworkSpeed();
   };
 
   if (isLoading && activeView === "Power") {
@@ -218,6 +232,14 @@ function App() {
             battery={batteryLevel}
             lastUpdated={lastUpdated}
             onRefresh={fetchBatteryData}
+          />
+        )}
+
+        {activeView === "Network" && networkSpeed && (
+          <NetworkSpeedCard
+            speedData={networkSpeed}
+            lastUpdated={lastUpdated}
+            onRefresh={fetchNetworkSpeed}
           />
         )}
       </div>

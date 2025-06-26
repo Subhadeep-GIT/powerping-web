@@ -5,11 +5,12 @@ import "./HamburgerMenu.css";
 export default function HamburgerMenu({ activeView, onSelect }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-  const views = ["Power", "Memory", "CPU", "Battery", "Logs", "Refresh"];
+
+  const views = ["Power", "Memory", "Battery", "Network"];
 
   const toggleMenu = () => setOpen(!open);
 
-  // 📌 Close menu on outside click
+  // 📌 Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -20,6 +21,10 @@ export default function HamburgerMenu({ activeView, onSelect }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleRefresh = () => {
+    window.location.reload(true); // 🔄 Hard refresh
+  };
 
   return (
     <div className="hamburger-wrapper" ref={menuRef}>
@@ -41,6 +46,12 @@ export default function HamburgerMenu({ activeView, onSelect }) {
               {view}
             </div>
           ))}
+
+          <div className="menu-separator" />
+
+          <div className="menu-item refresh-item" onClick={handleRefresh}>
+            🔄 Refresh
+          </div>
         </div>
       )}
     </div>
