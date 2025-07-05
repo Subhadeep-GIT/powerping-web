@@ -54,7 +54,7 @@ function App() {
 
   const fetchPowerStatus = useCallback(async () => {
     try {
-      const res = await fetch("https://everything-deviant-stays-min.trycloudflare.com/power-status");
+      const res = await fetch("https://signature-rapid-east-expenses.trycloudflare.com/power-status");
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const json = await res.json();
 
@@ -83,7 +83,7 @@ function App() {
 
   const fetchBatteryData = useCallback(async () => {
     try {
-      const res = await fetch("https://everything-deviant-stays-min.trycloudflare.com/battery-percentage");
+      const res = await fetch("https://signature-rapid-east-expenses.trycloudflare.com/battery-percentage");
       const json = await res.json();
       setBatteryLevel(json.battery);
       setLastUpdated(getTime());
@@ -94,7 +94,7 @@ function App() {
 
   const fetchMemoryData = useCallback(async () => {
     try {
-      const res = await fetch(" https://everything-deviant-stays-min.trycloudflare.com/memory-usage");
+      const res = await fetch(" https://signature-rapid-east-expenses.trycloudflare.com/memory-usage");
       const json = await res.json();
       setMemoryData(json);
       setLastUpdated(getTime());
@@ -105,7 +105,7 @@ function App() {
 
   const fetchNetworkSpeed = useCallback(async () => {
     try {
-      const res = await fetch("https://everything-deviant-stays-min.trycloudflare.com/network-speed");
+      const res = await fetch("https://signature-rapid-east-expenses.trycloudflare.com/network-speed");
       const json = await res.json();
       setNetworkSpeed(json);
       setLastUpdated(getTime());
